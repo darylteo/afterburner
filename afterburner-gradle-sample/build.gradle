@@ -49,5 +49,16 @@ task transform2(type: TransformationTask) {
   from sourceSets.main.output
   into("${buildDir}/transforms/transform2")
 
+  // look in buildSrc folder for this transformer. Alternatively, you can 
+  // write an implementation of the transformer within the script itself.
+  // but this will make the build slower since it has to be compiled each time
+  // you run the build
   transformation = new com.github.stephanenicolas.afterburner.sample.ExampleProcessor()
+}
+
+// the outputs of the two transformation tasks will go into /build/transforms
+// you don't need to worry about this though, as Gradle is perfectly capable of 
+// figuring out what you want to do through its TaskInputs and TaskOutputs properties.
+task transformedJar(type: Jar) {
+	from transform1 // this is the task above
 }
